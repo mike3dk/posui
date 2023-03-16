@@ -9,17 +9,11 @@ pip install git+https://github.com/mike3dk/posui
 ```
 
 ## Usage
-1. info
 ```
-blog_url = 'https://blog.naver.com/user'
+blog_url = 'https://blog.naver.com/songsong14/222993193146'
 
 info = posui.info(blog_url)
 print(info)
-
-```
-2. tags and images
-```
-blog_url = 'https://blog.naver.com/
 tags, images = posui.tags_images(blog_url)
 print(tags, images)
 ```
