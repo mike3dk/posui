@@ -39,8 +39,8 @@
   info:
     title: "위기주부의 미국 여행과 생활 V2"
     url: "https://chakeun.tistory.com/"
-    description: "14년간의 미국서부여행과 LA생활의 이야기들, 그리고 이어지는 미국동부의 여행과 생활"
     rss_url: https://chakeun.tistory.com/rss
+    description: "14년간의 미국서부여행과 LA생활의 이야기들, 그리고 이어지는 미국동부의 여행과 생활"
   images:
     - https://blog.kakaocdn.net/dn/bBRNEQ/btqOvSfNJfW/6hTYrJRjAPKDZIvA8SHlAK/img.jpg
     - https://blog.kakaocdn.net/dn/IN1v0/btqOuIrabHD/7tJM5HVoQYOOBiXE13FCJK/img.jpg
@@ -77,3 +77,14 @@
       "캘리포니아",
       "퍼니스크릭",
     ]
+- url: http://simugung.egloos.com/5980183
+  info:
+    title: "심유경네 집의 책장"
+    url: "http://simugung.egloos.com"
+    rss_url: http://rss.egloos.com/blog/simugung
+    description: "이런 저런 주제의 글을 쓰고 보관하는 곳입니다."
+    image: http://pds25.egloos.com/logo/201608/13/35/c0060635.jpg
+  images:
+    - "http://pds27.egloos.com/pds/202303/18/35/c0060635_64158af7186cb.png"
+    - "http://md.egloos.com/img/icon/ico_badreport.png"
+  tags: ["ZUN", "동방프로젝트"]

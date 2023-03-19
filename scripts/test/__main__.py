@@ -7,16 +7,17 @@ def main():
     with open("scripts/test/answerkey.yaml") as file:
         posts = yaml.safe_load(file)
 
-    for expected in posts:
-        print(f">>> {expected['url']}")
+    for idx, expected in enumerate(posts):
+        print(f">>>{idx}: {expected['url']}")
+
         posui = Posui(expected["url"])
 
         info = posui.blog_info
         tags, images = posui.post_tags_images
-        # print(info)
-        # print(tags)
-        # for img in images:
-        #     print(img)
+        print(info)
+        print(tags)
+        for img in images:
+            print(img)
 
         assert info == expected["info"]
         assert tags == expected["tags"]
