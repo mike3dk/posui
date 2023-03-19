@@ -48,6 +48,10 @@ class Posui:
     def post_tags_images(self):
         return self._tags, self._images
 
+    @property
+    def rss_url(self):
+        return self._rss_url
+
     def __guess_rss_url(self, url):
         parsed = urlparse(url)
         parts = parsed.path.split("/")
