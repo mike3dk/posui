@@ -28,9 +28,13 @@ def tistory_func_tags_images(url):
     soup = fetch_soup(url)
 
     main = soup.select_one("div.article-view")
-    images = [clean_image(img.get("src")) for img in main.select("img")]
+    images = [clean_image(img.get("src")) for img in main.select("img")] if main else []
 
     tag_area = soup.select_one("div.article-tag")
-    tags = sorted([clean_tag(tag.text) for tag in tag_area.select("a[rel='tag']")])
+    tags = (
+        sorted([clean_tag(tag.text) for tag in tag_area.select("a[rel='tag']")])
+        if tag_area
+        else []
+    )
 
     return tags, images

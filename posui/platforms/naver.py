@@ -44,9 +44,13 @@ def naver_func_tags_images(web_url):
     soup = fetch_soup(url)
 
     main = soup.select_one("div.post_ct")
-    images = [clean_image(img.get("src")) for img in main.select("img")]
+    images = [clean_image(img.get("src")) for img in main.select("img")] if main else []
 
     tag_area = soup.select_one("div.post_tag")
-    tags = sorted([clean_tag(tag.text) for tag in tag_area.select("span")])
+    tags = (
+        sorted([clean_tag(tag.text) for tag in tag_area.select("span")])
+        if tag_area
+        else []
+    )
 
     return tags, images

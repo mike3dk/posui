@@ -6,7 +6,7 @@ setup(
     version="1.0.0",
     description="extract info, tag and images from blog",
     author="mike3dk",
-    install_requires=["requests", "beautifulsoup4"],
+    install_requires=["requests", "beautifulsoup4", "feedparser", "pyyaml"],
     python_requires=">=3.6",
-    packages=["posui"],
+    packages=["posui", "posui/platforms"],
 )
