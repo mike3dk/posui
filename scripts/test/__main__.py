@@ -8,22 +8,26 @@ def main():
         posts = yaml.safe_load(file)
 
     for idx, expected in enumerate(posts):
-        print(f">>>{idx}: {expected['url']}")
+        try:
+            print(f">>>{idx}: {expected['url']}")
 
-        posui = Posui(expected["url"])
+            posui = Posui(expected["url"])
 
-        info = posui.blog_info
-        tags, images = posui.post_tags_images
-        print(info)
-        print(tags)
-        for img in images:
-            print(img)
+            info = posui.blog_info
+            tags, images = posui.post_tags_images
+            print(info)
+            print(tags)
+            for img in images[:3]:
+                print(img)
 
-        assert info == expected["info"]
-        assert tags == expected["tags"]
-        assert images == expected["images"]
+            assert info == expected["info"]
+            assert tags == expected["tags"]
+            assert images == expected["images"]
 
-        print(">>> all good!!!")
+            print(">>> all good!!!")
+        except AssertionError as err:
+            print(err)
+            breakpoint()
 
 
 if __name__ == "__main__":
