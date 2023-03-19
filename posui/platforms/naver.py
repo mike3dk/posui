@@ -1,5 +1,20 @@
 from urllib.parse import urlparse
+
+import feedparser
+
 from posui.platforms.common import fetch_soup
+
+
+def naver_func_blog_info(rss_url):
+    parsed = feedparser.parse(rss_url)
+    info = {
+        "title": parsed.feed.title,
+        "url": parsed.feed.link,
+        "rss_url": rss_url,
+        "description": parsed.feed.description,
+        "image": parsed.feed.image.href,
+    }
+    return info
 
 
 def mobile_url(web_url):
@@ -19,15 +34,19 @@ def clean_image(url):
     return cleaned
 
 
-def naver_func(web_url):
+def clean_tag(tag_text):
+    return tag_text.replace("#", "")
+
+
+def naver_func_tags_images(web_url):
     url = mobile_url(web_url)
 
     soup = fetch_soup(url)
 
     main = soup.select_one("div.post_ct")
-    images = [clean_image(i.get("src")) for i in main.select("img")]
+    images = [clean_image(img.get("src")) for img in main.select("img")]
 
     tag_area = soup.select_one("div.post_tag")
-    tags = sorted([i.text.replace("#", "") for i in tag_area.select("span")])
+    tags = sorted([clean_tag(tag.text) for tag in tag_area.select("span")])
 
     return tags, images

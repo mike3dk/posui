@@ -1,20 +1,30 @@
+from enum import Enum
 from urllib.parse import urlparse
 
 import feedparser
 
-from posui.type_detector import detect_type
-from posui.platforms.naver import naver_func
+from posui.platforms.naver import naver_func_blog_info, naver_func_tags_images
+from posui.platforms.tistory import tistory_func_blog_info, tistory_func_tags_images
 
 # from posui.platforms.daum import daum_func
-# from posui.platforms.tistory import tistory_func
 # from posui.platforms.egloos import egloos_func
-from posui.type_detector import BlogType
 
-type_func_dict = {
-    "Naver Blog": naver_func,
-    # BlogType.DUAM: daum_func,
-    # BlogType.TISTORY: tistory_func,
-    # BlogType.EGOOLS: egloos_func,
+
+class Platform(Enum):
+    NAVER = 1
+    TISTORY = 2  # daum is now using Tistory
+    EGOOLS = 3
+
+
+func_dict_blog_info = {
+    Platform.NAVER: naver_func_blog_info,
+    Platform.TISTORY: tistory_func_blog_info
+    # Platform.EGOOLS: egloos_func,
+}
+
+func_dict_tags_images = {
+    Platform.NAVER: naver_func_tags_images,
+    Platform.TISTORY: tistory_func_tags_images,
 }
 
 
@@ -22,9 +32,12 @@ class Posui:
     def __init__(self, url):
         self._url = url
         self._rss_url = self.__guess_rss_url(url)
-        self._blog_info = self.__extract_blog_info(self._rss_url)
-        func = type_func_dict[self._blog_info["generator"]]
-        self._tags, self._images = func(url)
+
+        func1 = func_dict_blog_info[self._platform]
+        self._blog_info = func1(self._rss_url)
+
+        func2 = func_dict_tags_images[self._platform]
+        self._tags, self._images = func2(url)
 
     @property
     def blog_info(self):
@@ -39,32 +52,20 @@ class Posui:
         parts = parsed.path.split("/")
         path_parts = [part for part in parts if part]
 
-        if parsed.netloc == "blog.naver.com":
+        if "naver" in parsed.netloc:
             name = path_parts[0]
-            return f"http://rss.{parsed.netloc}/{name}.xml"
+            self._platform = Platform.NAVER
+            return f"{parsed.scheme}://rss.{parsed.netloc}/{name}.xml"
 
-        if parsed.netloc == "daum.net":
-            return f"http://blog.daum.net/xml/rss{parsed.path}"
+        if "tistory" in parsed.netloc:
+            self._platform = Platform.TISTORY
+            return f"{parsed.scheme}://{parsed.netloc}/rss"
 
         name = parsed.path.split(".")[0]
-        if parsed.netloc == "egloos.com":
+        if "egloos" in parsed.netloc:
             return f"http://rss.egloos.com/blog/{name}"
 
-        if parsed.netloc == "blog.me":
+        if "blog.me" in parsed.netloc:
             return f"http://rss.blog.naver.com/{name}.xml"
 
         return f"http://{parsed.netloc}/rss"
-
-    def __extract_blog_info(self, url):
-        parsed = feedparser.parse(url)
-
-        info = {
-            "title": parsed.feed.title,
-            "url": parsed.feed.link,
-            "rss_url": url,
-            "image": parsed.feed.image.href,
-            "description": parsed.feed.description,
-            "generator": parsed.feed.generator,
-        }
-
-        return info
