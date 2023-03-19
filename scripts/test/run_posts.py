@@ -1,20 +1,20 @@
 import yaml
 
-from posui import Posui
+from posui import PostHandler, BlogChartHandler
 
 
 def main():
-    with open("scripts/test/answerkey.yaml") as file:
-        posts = yaml.safe_load(file)
+    with open("scripts/test/expected_posts.yaml") as file:
+        expected_list = yaml.safe_load(file)
 
-    for idx, expected in enumerate(posts):
+    for idx, expected in enumerate(expected_list):
         try:
             print(f">>>{idx}: {expected['url']}")
 
-            posui = Posui(expected["url"])
+            ph = PostHandler(expected["url"])
 
-            info = posui.blog_info
-            tags, images = posui.post_tags_images
+            info = ph.blog_info
+            tags, images = ph.post_tags_images
             print(info)
             print(tags)
             for img in images[:3]:

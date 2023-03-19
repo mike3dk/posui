@@ -7,8 +7,6 @@ from posui.platforms.naver import naver_func_blog_info, naver_func_tags_images
 from posui.platforms.tistory import tistory_func_blog_info, tistory_func_tags_images
 from posui.platforms.egloos import egloos_func_blog_info, egloos_func_tags_images
 
-# from posui.platforms.daum import daum_func
-
 
 class Platform(Enum):
     NAVER = 1
@@ -29,7 +27,7 @@ func_dict_tags_images = {
 }
 
 
-class Posui:
+class PostHandler:
     def __init__(self, url):
         self._url = url
         self._rss_url = self.__guess_rss_url(url)
